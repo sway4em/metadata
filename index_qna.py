@@ -4,6 +4,10 @@
 
 import boto3
 
+import logging
+import sys
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 # Setup bedrock
 bedrock_runtime = boto3.client(
     service_name="bedrock-runtime",
@@ -41,6 +45,7 @@ from llama_index.embeddings.langchain import LangchainEmbedding
 from llama_index.embeddings.langchain import LangchainEmbedding
 from llama_index.embeddings.langchain import LangchainEmbedding
 from llama_index.embeddings.langchain import LangchainEmbedding
+from llama_index.core.graph_stores import SimpleGraphStore
 
 from langchain.embeddings import BedrockEmbeddings
 
@@ -57,7 +62,7 @@ embed_model = LangchainEmbedding(bedrock_embedding)
 # Service Context
 #####################################################################
 
-from llama_index.core import ServiceContext, set_global_service_context
+from llama_index.core import ServiceContext, set_global_service_context, KnowledgeGraphIndex
 
 service_context = ServiceContext.from_defaults(
   llm=llm,
@@ -73,7 +78,7 @@ set_global_service_context(service_context)
 
 import streamlit as st
 from llama_index.core import SimpleDirectoryReader
-from llama_index.core import VectorStoreIndex
+from llama_index.core import VectorStoreIndex, StorageContext
 
 st.set_page_config(
   page_title="LlamaIndex Q&A over you data 📂",
@@ -84,6 +89,24 @@ st.set_page_config(
 
 st.title("LlamaIndex 🦙 Q&A over your data 📂")
 
+# @st.cache_resource(show_spinner=False)
+# def load_data():
+#   """
+#     Loads and indexes the data using the VectorStoreIndex.
+    
+#     Returns:
+#     - VectorStoreIndex: Indexed representation of your data.
+#   """
+#   with st.spinner(
+#     text="Loading and indexing your data. This may take a while..."):
+#     reader=SimpleDirectoryReader(input_dir="./data", recursive=True)
+#     docs=reader.load_data()
+
+#     index=VectorStoreIndex.from_documents(docs)
+#     return index
+
+graph_store = SimpleGraphStore()
+storage_context = StorageContext.from_defaults(graph_store=graph_store)
 @st.cache_resource(show_spinner=False)
 def load_data():
   """
@@ -94,17 +117,33 @@ def load_data():
   """
   with st.spinner(
     text="Loading and indexing your data. This may take a while..."):
-    reader=SimpleDirectoryReader(input_dir="./data", recursive=True)
-    docs=reader.load_data()
+    documents=SimpleDirectoryReader(input_dir="./data", recursive=True).load_data()
 
-    index=VectorStoreIndex.from_documents(docs)
+    index = KnowledgeGraphIndex.from_documents(
+        documents,
+        max_triplets_per_chunk=2,
+        include_embeddings=True,
+        storage_context=storage_context,
+    )    
     return index
-
 # Create Index
 index=load_data()
-
+# documents = SimpleDirectoryReader(
+#     "./data"
+# ).load_data()
+# index = KnowledgeGraphIndex.from_documents(
+#     documents,
+#     max_triplets_per_chunk=2,
+#     include_embeddings=True,
+# )
 # Create Query Engine
-query_engine=index.as_query_engine(similarity_top_k=3)
+# query_engine=index.as_query_engine(similarity_top_k=3)
+query_engine = index.as_query_engine(
+    include_text=True,
+    response_mode="tree_summarize",
+    embedding_mode="hybrid",
+    similarity_top_k=5,
+)
 
 # Take input from the user
 user_input=st.text_input("Enter Your Query", "")

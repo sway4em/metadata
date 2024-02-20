@@ -1,0 +1,80 @@
+{
+    "Document Title": {
+      "Description": "Title of the report",
+      "Prompt": "Please enter the title of the report? Title:"
+    },
+    "Department": {
+      "Description": "Details the department responsible and cost center number",
+      "Prompt": "Department? Return a comma separated list. ["
+    },
+    "Cost Center": {
+        "Description": "Cost center number for the project",
+        "Prompt": "Cost Center? Return the number only. If there is no cost center, return N/A"
+    },
+    "Agenda Date": {
+      "Description": "Date of agenda for the report",
+      "Prompt": "Fill in the blanks, \"For Agenda Of: _\". Return mm/dd/yyyy format only. Only return the date and nothing else. For Agenda Of:"
+    },
+    "Estimated Time": {
+      "Description": "Estimated duration for the discussion of this item",
+      "Prompt": "Estimated Time? Return the time in minutes. If there is no estimated time, return N/A"
+    },
+    "Authors": {
+      "Description": "Names of the deputy city manager and the official responsible for the report",
+      "Prompt": "Please enter the names of the deputy city manager and the official responsible for the report. Return a comma separated list. ["
+    },
+    "Subject": {
+      "Description": "The main topic or subject of the report",
+      "Prompt": "Please enter the subject of the report. Subject:"
+    },
+    "Recommendation": {
+      "Description": "Recommendations proposed in the report",
+      "Prompt": "What were the recommendations outlined in the document? Answer in detail. Recommendation:"
+    },
+    "Policy Context": {
+      "Description": "Context of the policy related to the report topic"
+    },
+    "Discussion": {
+      "Description": "In-depth discussion on the subject, including background, plan overview, goals, key elements, and public engagement",
+      "Prompt": "Please provide a detailed discussion on the subject, including background, plan overview, goals, key elements, and public engagement. Discussion:"
+    },
+    "Concurrence": {
+      "Description": "Details on departmental agreement or concurrence with the plan"
+    },
+    "Environmental Review": {
+      "Description": "Information on environmental considerations and compliance"
+    },
+    "Fiscal Impact": {
+      "Description": "Financial implications and budget considerations of the plan"
+    },
+    "Alternatives": {
+      "Description": "Alternative actions or recommendations provided for consideration"
+    },
+    "Attachments": {
+      "Description": "List of attached documents and their relevance"
+    },
+    "Resolution": {
+      "Description": "Details of the resolution proposed for adoption"
+    },
+    "List of Tables":{
+        "Description": "List of all the tables including title and page number",
+        "Proceduce": "Query page numbers and extract table summaries"
+    },
+    "List of Acronyms":{
+        "Description": "List of acronyms mentioned in the doument",
+        "Procedure": "Extract acryonyms and store as plaintext"
+    },
+    "Historical Context":{
+        "Description": "Historical Context of the project"
+    }.
+    "Implementation":{
+        "Description": "Implementation details for the project",
+        "Procedure": "Recusrively summarize all sections of the implementation section and prepare a dense summary"
+    },
+    "Relationship to Other city Documents":{
+        "Description": "Information about other documents related to the project",
+        "Procedure": "Write a dense description of the relationship with other documents. Specify doc id after querying using the title"
+    }
+  }
+  
+  
