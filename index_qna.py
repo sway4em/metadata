@@ -1,12 +1,3 @@
-# requirements.txt
-# import boto3
-# import botocore
-# import llama-index
-# import langchain
-# import streamlit
-# import pypdf
-# main.py
-
 #####################################################################
 # Amazon Bedrock - boto3
 #####################################################################
